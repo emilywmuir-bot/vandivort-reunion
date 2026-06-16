@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "db55524f-c55c-469b-b7d2-6fc55cc66e9f",
+  "id": "a6db469c-9b0d-4a1d-91cc-63171b56d863",
   "prevIds": [
-    "00000000-0000-0000-0000-000000000000"
+    "db55524f-c55c-469b-b7d2-6fc55cc66e9f"
   ],
   "ddl": [
     {
@@ -53,6 +53,19 @@
       "generated": null,
       "identity": null,
       "name": "body",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "0",
+      "generated": null,
+      "identity": null,
+      "name": "upvotes",
       "entityType": "columns",
       "schema": "public",
       "table": "messages"

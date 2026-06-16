@@ -1,18 +1,31 @@
 import type { Config } from "@netlify/functions";
-import { desc } from "drizzle-orm";
 import { db } from "../../db/index.js";
-import { suggestions } from "../../db/schema.js";
 
 const BODY_MAX = 600;
 
+type SuggestionRow = {
+  id: number;
+  body: string;
+  created_at: string | Date;
+};
+
+function serializeSuggestion(row: SuggestionRow) {
+  return {
+    id: row.id,
+    body: row.body,
+    createdAt: row.created_at,
+  };
+}
+
 export default async (req: Request) => {
   if (req.method === "GET") {
-    const rows = await db
-      .select()
-      .from(suggestions)
-      .orderBy(desc(suggestions.createdAt))
-      .limit(200);
-    return Response.json(rows);
+    const rows = await db.sql<SuggestionRow[]>`
+      SELECT id, body, created_at
+      FROM suggestions
+      ORDER BY created_at DESC
+      LIMIT 200
+    `;
+    return Response.json(rows.map(serializeSuggestion));
   }
 
   if (req.method === "POST") {
@@ -29,9 +42,13 @@ export default async (req: Request) => {
       return Response.json({ error: "Suggestion text is required" }, { status: 400 });
     }
 
-    const [row] = await db.insert(suggestions).values({ body }).returning();
+    const [row] = await db.sql<SuggestionRow[]>`
+      INSERT INTO suggestions (body)
+      VALUES (${body})
+      RETURNING id, body, created_at
+    `;
 
-    return Response.json(row, { status: 201 });
+    return Response.json(serializeSuggestion(row), { status: 201 });
   }
 
   return new Response("Method not allowed", { status: 405 });

@@ -1,5 +1,3 @@
-import { drizzle } from "drizzle-orm/netlify-db";
-import * as schema from "./schema.js";
+import { getDatabase } from "@netlify/database";
 
-// The connection is configured automatically by the Netlify Database adapter.
-export const db = drizzle({ schema });
+export const db = getDatabase();

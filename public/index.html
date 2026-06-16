@@ -122,6 +122,14 @@
   .msg-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--soft);margin-bottom:2px}
   .msg-meta b{color:var(--field);font-size:13px}
   .msg-text{font-size:14.5px;white-space:pre-wrap;word-wrap:break-word}
+  .msg-actions{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .upvote{
+    border:1.5px solid var(--mist);background:var(--paper);color:var(--ink);
+    border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;
+    font-weight:700;cursor:pointer;
+  }
+  .upvote:hover{border-color:var(--field);color:var(--field)}
+  .upvote:disabled{cursor:default;opacity:.65}
   .msg-delete{
     display:none;background:none;border:none;color:var(--cherry);
     font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline;
@@ -146,13 +154,21 @@
 
   /* ---------- photos ---------- */
   .photocard{background:#fff;border:1.5px solid var(--mist);border-radius:12px;padding:24px;text-align:center}
+  .photoactions{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;max-width:620px;margin:0 auto}
   .photobtn{
-    display:inline-block;background:var(--field);color:#fff;text-decoration:none;
-    font-weight:700;font-size:16px;padding:13px 28px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;background:var(--field);color:#fff;text-decoration:none;
+    font-weight:700;font-size:16px;padding:14px 18px;border-radius:999px;min-height:48px;
   }
+  .videobtn{background:var(--ink)}
   .photobtn:hover{filter:brightness(.92)}
-  .photohow{font-size:13.5px;color:var(--soft);margin-top:14px;max-width:440px;margin-left:auto;margin-right:auto}
+  .photohow{
+    font-size:14px;color:var(--soft);margin-top:18px;max-width:620px;margin-left:auto;margin-right:auto;text-align:left;
+    background:var(--cream);border:1px solid var(--mist);border-radius:10px;padding:16px 18px;
+  }
+  .photohow h3{font-family:Georgia,serif;font-size:18px;color:var(--ink);margin-bottom:8px}
   .photohow b{color:var(--ink)}
+  .photohow ol{margin:8px 0 0 20px}
+  .photohow li{margin-top:6px}
 
   /* ---------- info cards ---------- */
   .infogrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
@@ -183,7 +199,8 @@
     <p class="sub"><b>Bavarian Halle &middot; Jackson, Missouri</b><br>Staying at the Drury Inn &middot; Halle opens Thursday at 2&nbsp;PM</p>
     <div class="quicklinks">
       <a href="https://forms.gle/yfm2dkwmEgZNnLxs7" target="_blank" rel="noopener">Volunteer sign-up</a>
-      <a href="https://photos.app.goo.gl/iE9Zcq2dGquR4Qy8A" target="_blank" rel="noopener">Photo album</a>
+      <a href="#photos">Photo album</a>
+      <a href="https://vimeo.com/1028551127/a0de01b33d?share=copy&amp;fl=sv&amp;fe=ci" target="_blank" rel="noopener">Reunion video</a>
       <a href="#info">Hotel &amp; local info</a>
       <a href="#board">Message board</a>
       <a href="#suggest">Suggestion box</a>
@@ -202,11 +219,23 @@
 
   <!-- ================= PHOTOS ================= -->
   <section id="photos">
-    <h2>Reunion photo album</h2>
-    <p class="section-note">One shared album for the whole weekend — add your pics so everyone can see them.</p>
+    <h2>Reunion photos &amp; video</h2>
+    <p class="section-note">Open the shared Google Photos album or watch the reunion video from Vimeo.</p>
     <div class="photocard">
-      <a class="photobtn" href="https://photos.app.goo.gl/iE9Zcq2dGquR4Qy8A" target="_blank" rel="noopener">📸 Open the family album</a>
-      <p class="photohow"><b>To add your photos:</b> tap the button above, then hit the <b>+ Add photos</b> button inside the album. Works right from your phone's camera roll — no account setup needed.</p>
+      <div class="photoactions">
+        <a class="photobtn" href="https://photos.app.goo.gl/iE9Zcq2dGquR4Qy8A" target="_blank" rel="noopener">📸 Open the family album</a>
+        <a class="photobtn videobtn" href="https://vimeo.com/1028551127/a0de01b33d?share=copy&amp;fl=sv&amp;fe=ci" target="_blank" rel="noopener">▶ Watch the reunion video</a>
+      </div>
+      <div class="photohow">
+        <h3>Google Photos upload tips</h3>
+        <b>To add your photos or videos to the shared album:</b>
+        <ol>
+          <li>Tap <b>Open the family album</b>.</li>
+          <li>In Google Photos, tap <b>Join</b> if prompted.</li>
+          <li>Tap <b>+ Add photos</b> or <b>Add photos</b>, then choose pictures or videos from your phone.</li>
+          <li>Tap <b>Done</b> or <b>Add</b> to finish uploading them to the shared album.</li>
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -301,19 +330,19 @@ const EVENTS = [
   {date:"2026-07-03", start:"10:00", end:"11:30", title:"Vandivorts in the Revolutionary War",
    detail:"Led by Rita & Gail. Meet in the salon of the Halle. Kids' crafts provided in the Halle.", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"13:30", end:"14:15", title:"VPI Directors & Officers Meeting (closed)",
-   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"14:15", end:"15:00", title:"Farm Meeting — all welcome!",
-   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"15:00", end:"16:00", title:"Annual Shareholders Meeting — all welcome!",
-   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"18:00", end:"20:00", title:"BBQ Dinner in the Halle",
    detail:"Tom Vandivort Tribute after the meal.", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"20:30", end:"22:00", title:"Fireworks at 121 Fox Run",
-   detail:"Bring something to sit on / BYOB. Show starts at dusk.", loc:"121 Fox Run, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Bring something to sit on / BYOB. Show starts at dusk.", loc:"121 Fox Run, Cape Girardeau, MO 63701", day:"Friday — History & VPI Meetings", ddate:"July 3"},
 
   // Saturday, July 4 — 5K Race & Farm Visit
   {date:"2026-07-04", start:"07:04", end:"08:30", title:"5K Race in Jackson",
-   detail:"Race starts at 7:04 AM sharp — run or walk, all paces welcome.", loc:"Jackson, MO", day:"Saturday — 5K & Farm Visit", ddate:"July 4"},
+   detail:"Race starts at 7:04 AM sharp — run or walk, all paces welcome.", loc:"410 W Main St, Jackson, MO 63755", day:"Saturday — 5K & Farm Visit", ddate:"July 4"},
   {date:"2026-07-04", start:"09:00", end:"12:00", title:"Farm Visit to Northcut",
    detail:"Depart from hotel ~9 AM, arrive at the farm by 9:30. Lunch on your own afterward.", loc:"Northcut Farm", day:"Saturday — 5K & Farm Visit", ddate:"July 4"},
   {date:"2026-07-04", start:"18:00", end:"20:00", title:"Dinner in the Halle — with Snoopy Cake!",
@@ -338,6 +367,9 @@ function googleUrl(ev){
     ctz: TZ
   });
   return "https://calendar.google.com/calendar/render?" + p.toString();
+}
+function mapUrl(loc){
+  return "https://www.google.com/maps/search/?" + new URLSearchParams({api:"1", query:loc}).toString();
 }
 function downloadICS(ev){
   const ics = [
@@ -398,7 +430,7 @@ function fmtTime(t){
         '<div class="event-main">' +
           timeHtml +
           '<div class="etitle">' + ev.title + '</div>' +
-          '<div class="edetail">' + ev.detail + '</div>' +
+          '<div class="edetail">' + ev.detail + (ev.loc ? ' <a href="' + mapUrl(ev.loc) + '" target="_blank" rel="noopener">GPS directions</a>' : '') + '</div>' +
         '</div>' + stubHtml;
       if(!ev.noCal){
         const stub = row.querySelector(".event-stub");
@@ -435,7 +467,23 @@ const msgAdmin = document.getElementById("msgAdmin");
 
 const NAME_KEY = "vandivort-my-name";
 const ADMIN_CODE_KEY = "vandivort-message-admin-code";
+const UPVOTE_KEY = "vandivort-upvoted-messages";
 let messageAdminCode = "";
+function getUpvotedMessages(){
+  try{
+    const parsed = JSON.parse(localStorage.getItem(UPVOTE_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed.map(Number).filter(Number.isInteger) : [];
+  }catch(e){
+    return [];
+  }
+}
+function saveUpvotedMessage(id){
+  try{
+    const ids = new Set(getUpvotedMessages());
+    ids.add(id);
+    localStorage.setItem(UPVOTE_KEY, JSON.stringify([...ids]));
+  }catch(e){}
+}
 function loadName(){
   try{ const v = localStorage.getItem(NAME_KEY); if(v) msgName.value = v; }catch(e){}
 }
@@ -454,10 +502,16 @@ async function loadMessages(){
       msgStatus.textContent = "No messages yet — be the first to say hi!";
       return;
     }
-    msgList.innerHTML = items.map(m =>
-      '<div class="msg"><div class="msg-meta"><b>' + esc(m.name || "Anonymous") + '</b> · ' +
-      stamp(m.createdAt) + ' <button class="msg-delete" data-id="' + esc(String(m.id)) + '">Delete</button></div><div class="msg-text">' + esc(m.body) + '</div></div>'
-    ).join("");
+    const upvoted = new Set(getUpvotedMessages());
+    msgList.innerHTML = items.map(m => {
+      const id = Number(m.id);
+      const count = Number(m.upvotes || 0);
+      const voted = upvoted.has(id);
+      return '<div class="msg"><div class="msg-meta"><b>' + esc(m.name || "Anonymous") + '</b> · ' +
+      stamp(m.createdAt) + ' <button class="msg-delete" data-id="' + esc(String(m.id)) + '">Delete</button></div><div class="msg-text">' + esc(m.body) + '</div>' +
+      '<div class="msg-actions"><button class="upvote" data-id="' + esc(String(m.id)) + '"' + (voted ? ' disabled' : '') + '>▲ ' + (voted ? 'Upvoted' : 'Upvote') + '</button>' +
+      '<span class="msg-meta">' + esc(String(count)) + ' upvote' + (count === 1 ? '' : 's') + '</span></div></div>';
+    }).join("");
     msgStatus.textContent = "";
   }catch(e){
     msgStatus.textContent = "Couldn't load messages — tap Refresh to try again.";
@@ -481,6 +535,23 @@ async function postMessage(){
     msgStatus.textContent = "Couldn't post — check your connection and try again.";
   }
   msgSend.disabled = false;
+}
+async function upvoteMessage(id){
+  if(!Number.isInteger(id) || id < 1) return;
+  if(getUpvotedMessages().includes(id)) return;
+  msgStatus.textContent = "Adding upvote...";
+  try{
+    const res = await fetch("/api/messages", {
+      method:"PATCH",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({id:id, action:"upvote"})
+    });
+    if(!res.ok) throw new Error("bad status");
+    saveUpvotedMessage(id);
+    await loadMessages();
+  }catch(e){
+    msgStatus.textContent = "Couldn't add upvote — tap Refresh to try again.";
+  }
 }
 async function deleteMessage(id){
   if(!messageAdminCode) return;
@@ -520,9 +591,15 @@ msgAdmin.addEventListener("click", () => {
 });
 msgList.addEventListener("click", (e) => {
   if(!(e.target instanceof Element)) return;
-  const btn = e.target.closest(".msg-delete");
-  if(!btn) return;
-  deleteMessage(Number(btn.dataset.id));
+  const deleteBtn = e.target.closest(".msg-delete");
+  if(deleteBtn){
+    deleteMessage(Number(deleteBtn.dataset.id));
+    return;
+  }
+  const upvoteBtn = e.target.closest(".upvote");
+  if(upvoteBtn){
+    upvoteMessage(Number(upvoteBtn.dataset.id));
+  }
 });
 loadName(); loadAdminCode(); loadMessages();
 setInterval(loadMessages, 20000);
@@ -574,7 +651,7 @@ document.getElementById("sugToggle").addEventListener("click", ()=>{
   if(sugOpen) loadSuggestions();
 });
 
-/* photo album links directly to the shared Google Photos album */
+/* photo album shortcut opens this page's photo section so guests see the video and upload guide */
 </script>
 </body>
 </html>

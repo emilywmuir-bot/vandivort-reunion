@@ -1,10 +1,11 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 // Public message board: anyone at the reunion can post a note for the family.
 export const messages = pgTable("messages", {
   id: serial().primaryKey(),
   name: text().notNull().default("Anonymous"),
   body: text().notNull(),
+  upvotes: integer().notNull().default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
