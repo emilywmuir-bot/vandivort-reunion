@@ -183,9 +183,30 @@
     border-top:3px solid var(--ink);padding:28px 0 40px;text-align:center;
     font-size:13px;color:var(--soft);
   }
+  .mobile-taskbar{display:none}
   @media (max-width:520px){
+    html{scroll-padding-bottom:92px}
+    body{padding-bottom:88px}
+    section{scroll-margin-bottom:92px}
     .event{flex-direction:column}
     .event-stub{border-left:none;border-top:2px dashed var(--mist);padding:10px 16px;flex-direction:row;gap:14px}
+    .mobile-taskbar{
+      position:fixed;left:0;right:0;bottom:0;z-index:20;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+      background:rgba(252,251,247,.96);
+      border-top:2px solid var(--ink);
+      box-shadow:0 -10px 24px rgba(27,42,74,.12);
+      backdrop-filter:blur(10px);
+    }
+    .mobile-taskbar a{
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      min-height:48px;padding:6px 4px;border:1.5px solid var(--mist);
+      border-radius:8px;background:#fff;color:var(--ink);text-decoration:none;
+      font-size:11.5px;font-weight:800;line-height:1.1;
+    }
+    .mobile-taskbar a:hover{border-color:var(--field);color:var(--field)}
+    .mobile-taskbar a:focus-visible{outline:3px solid var(--cherry);outline-offset:2px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -311,6 +332,13 @@
     See you next year! 🎉 🇺🇸
   </div>
 </footer>
+
+<nav class="mobile-taskbar" aria-label="Mobile reunion shortcuts">
+  <a href="#schedule">Schedule</a>
+  <a href="#photos">Photos</a>
+  <a href="#board">Message Board</a>
+  <a href="#info">Hotel Info</a>
+</nav>
 
 <script>
 /* ============================================================
