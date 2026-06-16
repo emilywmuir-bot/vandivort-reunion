@@ -10,9 +10,9 @@
   "dependencies": {
     "@netlify/database": "^1.0.0",
     "@netlify/functions": "^5.3.0",
-    "drizzle-orm": "^1.0.0-rc.3"
+    "drizzle-orm": "0.45.2"
   },
   "devDependencies": {
-    "drizzle-kit": "^1.0.0-rc.3"
+    "drizzle-kit": "0.31.10"
   }
 }
