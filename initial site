@@ -306,15 +306,15 @@ const EVENTS = [
   {date:"2026-07-03", start:"10:00", end:"11:30", title:"Vandivorts in the Revolutionary War",
    detail:"Led by Rita & Gail. Meet in the salon of the Halle. Kids' crafts provided in the Halle.", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"13:30", end:"14:15", title:"VPI Directors & Officers Meeting (closed)",
-   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"14:15", end:"15:00", title:"Farm Meeting — all welcome!",
-   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"15:00", end:"16:00", title:"Annual Shareholders Meeting — all welcome!",
-   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"18:00", end:"20:00", title:"BBQ Dinner in the Halle",
    detail:"Tom Vandivort Tribute after the meal.", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"20:30", end:"22:00", title:"Fireworks at 121 Fox Run",
-   detail:"Bring something to sit on / BYOB. Show starts at dusk.", loc:"121 Fox Run, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Bring something to sit on / BYOB. Show starts at dusk.", loc:"121 Fox Run, Cape Girardeau, MO 63701", day:"Friday — History & VPI Meetings", ddate:"July 3"},
 
   // Saturday, July 4 — 5K Race & Farm Visit
   {date:"2026-07-04", start:"07:04", end:"08:30", title:"5K Race in Jackson",
@@ -343,6 +343,9 @@ function googleUrl(ev){
     ctz: TZ
   });
   return "https://calendar.google.com/calendar/render?" + p.toString();
+}
+function mapUrl(loc){
+  return "https://www.google.com/maps/search/?" + new URLSearchParams({api:"1", query:loc}).toString();
 }
 function downloadICS(ev){
   const ics = [
@@ -403,7 +406,7 @@ function fmtTime(t){
         '<div class="event-main">' +
           timeHtml +
           '<div class="etitle">' + ev.title + '</div>' +
-          '<div class="edetail">' + ev.detail + '</div>' +
+          '<div class="edetail">' + ev.detail + (ev.loc ? ' <a href="' + mapUrl(ev.loc) + '" target="_blank" rel="noopener">GPS directions</a>' : '') + '</div>' +
         '</div>' + stubHtml;
       if(!ev.noCal){
         const stub = row.querySelector(".event-stub");
