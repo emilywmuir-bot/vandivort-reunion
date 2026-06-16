@@ -146,13 +146,17 @@
 
   /* ---------- photos ---------- */
   .photocard{background:#fff;border:1.5px solid var(--mist);border-radius:12px;padding:24px;text-align:center}
+  .photoactions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
   .photobtn{
     display:inline-block;background:var(--field);color:#fff;text-decoration:none;
     font-weight:700;font-size:16px;padding:13px 28px;border-radius:999px;
   }
+  .videobtn{background:var(--ink)}
   .photobtn:hover{filter:brightness(.92)}
-  .photohow{font-size:13.5px;color:var(--soft);margin-top:14px;max-width:440px;margin-left:auto;margin-right:auto}
+  .photohow{font-size:13.5px;color:var(--soft);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;text-align:left}
   .photohow b{color:var(--ink)}
+  .photohow ol{margin:8px 0 0 20px}
+  .photohow li{margin-top:4px}
 
   /* ---------- info cards ---------- */
   .infogrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
@@ -205,8 +209,19 @@
     <h2>Reunion photo album</h2>
     <p class="section-note">One shared album for the whole weekend — add your pics so everyone can see them.</p>
     <div class="photocard">
-      <a class="photobtn" href="https://photos.app.goo.gl/iE9Zcq2dGquR4Qy8A" target="_blank" rel="noopener">📸 Open the family album</a>
-      <p class="photohow"><b>To add your photos:</b> tap the button above, then hit the <b>+ Add photos</b> button inside the album. Works right from your phone's camera roll — no account setup needed.</p>
+      <div class="photoactions">
+        <a class="photobtn" href="https://photos.app.goo.gl/iE9Zcq2dGquR4Qy8A" target="_blank" rel="noopener">📸 Open the family album</a>
+        <a class="photobtn videobtn" href="https://vimeo.com/" target="_blank" rel="noopener">▶ Watch the reunion video</a>
+      </div>
+      <div class="photohow">
+        <b>To upload to the Google Photos album:</b>
+        <ol>
+          <li>Tap <b>Open the family album</b>.</li>
+          <li>In Google Photos, tap <b>Join</b> if prompted.</li>
+          <li>Tap <b>+ Add photos</b> or <b>Add photos</b>, then choose pictures or videos from your phone.</li>
+          <li>Tap <b>Done</b> or <b>Add</b> to finish uploading them to the shared album.</li>
+        </ol>
+      </div>
     </div>
   </section>
 

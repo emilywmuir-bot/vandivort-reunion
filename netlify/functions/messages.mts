@@ -1,20 +1,35 @@
 import type { Config } from "@netlify/functions";
-import { desc, eq } from "drizzle-orm";
 import { db } from "../../db/index.js";
-import { messages } from "../../db/schema.js";
 
 const NAME_MAX = 40;
 const BODY_MAX = 600;
 const ADMIN_CODE_VAR = "MESSAGE_ADMIN_CODE";
 
+type MessageRow = {
+  id: number;
+  name: string;
+  body: string;
+  created_at: string | Date;
+};
+
+function serializeMessage(row: MessageRow) {
+  return {
+    id: row.id,
+    name: row.name,
+    body: row.body,
+    createdAt: row.created_at,
+  };
+}
+
 export default async (req: Request) => {
   if (req.method === "GET") {
-    const rows = await db
-      .select()
-      .from(messages)
-      .orderBy(desc(messages.createdAt))
-      .limit(200);
-    return Response.json(rows);
+    const rows = await db.sql<MessageRow[]>`
+      SELECT id, name, body, created_at
+      FROM messages
+      ORDER BY created_at DESC
+      LIMIT 200
+    `;
+    return Response.json(rows.map(serializeMessage));
   }
 
   if (req.method === "POST") {
@@ -32,12 +47,13 @@ export default async (req: Request) => {
       return Response.json({ error: "Message text is required" }, { status: 400 });
     }
 
-    const [row] = await db
-      .insert(messages)
-      .values({ name: name || "Anonymous", body })
-      .returning();
+    const [row] = await db.sql<MessageRow[]>`
+      INSERT INTO messages (name, body)
+      VALUES (${name || "Anonymous"}, ${body})
+      RETURNING id, name, body, created_at
+    `;
 
-    return Response.json(row, { status: 201 });
+    return Response.json(serializeMessage(row), { status: 201 });
   }
 
   if (req.method === "DELETE") {
@@ -62,10 +78,11 @@ export default async (req: Request) => {
       return Response.json({ error: "Valid message id is required" }, { status: 400 });
     }
 
-    const [deleted] = await db
-      .delete(messages)
-      .where(eq(messages.id, id))
-      .returning({ id: messages.id });
+    const [deleted] = await db.sql<{ id: number }[]>`
+      DELETE FROM messages
+      WHERE id = ${id}
+      RETURNING id
+    `;
 
     if (!deleted) {
       return Response.json({ error: "Message not found" }, { status: 404 });
