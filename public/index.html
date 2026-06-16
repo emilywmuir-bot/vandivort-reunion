@@ -67,11 +67,22 @@
   /* ---------- schedule tickets ---------- */
   .day{margin-bottom:34px}
   .day-head{
-    display:flex;align-items:baseline;gap:12px;
+    width:100%;display:flex;align-items:baseline;gap:12px;
     border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:14px;
+    background:none;color:inherit;border-left:none;border-right:none;border-top:none;
+    font:inherit;text-align:left;cursor:pointer;
   }
+  .day-head:hover .dname{color:var(--field)}
+  .day-head:focus-visible{outline:3px solid var(--cherry);outline-offset:3px}
   .day-head .dname{font-family:Georgia,serif;font-size:20px;font-weight:700}
   .day-head .ddate{font-size:13px;color:var(--cherry);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .day-toggle{
+    margin-left:auto;font-size:22px;line-height:1;color:var(--field);
+    transform:rotate(45deg);transition:transform .18s ease;
+  }
+  .day.collapsed .day-toggle{transform:rotate(0deg)}
+  .day-events{display:block}
+  .day.collapsed .day-events{display:none}
   .event{
     display:flex;align-items:stretch;background:#fff;
     border:1.5px solid var(--mist);border-radius:10px;
@@ -437,9 +448,21 @@ function fmtTime(t){
   });
   days.forEach(d=>{
     const dayEl = document.createElement("div");
+    const panelId = "schedule-day-" + d.date;
     dayEl.className = "day";
-    dayEl.innerHTML = '<div class="day-head"><span class="dname">' + d.day +
-      '</span><span class="ddate">' + d.ddate + '</span></div>';
+    dayEl.innerHTML =
+      '<button class="day-head" type="button" aria-expanded="true" aria-controls="' + panelId + '">' +
+        '<span class="dname">' + d.day + '</span>' +
+        '<span class="ddate">' + d.ddate + '</span>' +
+        '<span class="day-toggle" aria-hidden="true">+</span>' +
+      '</button>' +
+      '<div class="day-events" id="' + panelId + '"></div>';
+    const head = dayEl.querySelector(".day-head");
+    const eventsEl = dayEl.querySelector(".day-events");
+    head.addEventListener("click", () => {
+      const isCollapsed = dayEl.classList.toggle("collapsed");
+      head.setAttribute("aria-expanded", String(!isCollapsed));
+    });
     d.events.forEach(ev=>{
       const row = document.createElement("div");
       row.className = "event";
@@ -468,7 +491,7 @@ function fmtTime(t){
         });
         row.querySelector(".appleics").addEventListener("click", ()=> downloadICS(ev));
       }
-      dayEl.appendChild(row);
+      eventsEl.appendChild(row);
     });
     root.appendChild(dayEl);
   });
