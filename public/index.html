@@ -194,9 +194,30 @@
     border-top:3px solid var(--ink);padding:28px 0 40px;text-align:center;
     font-size:13px;color:var(--soft);
   }
+  .mobile-taskbar{display:none}
   @media (max-width:520px){
+    html{scroll-padding-bottom:92px}
+    body{padding-bottom:88px}
+    section{scroll-margin-bottom:92px}
     .event{flex-direction:column}
     .event-stub{border-left:none;border-top:2px dashed var(--mist);padding:10px 16px;flex-direction:row;gap:14px}
+    .mobile-taskbar{
+      position:fixed;left:0;right:0;bottom:0;z-index:20;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+      background:rgba(252,251,247,.96);
+      border-top:2px solid var(--ink);
+      box-shadow:0 -10px 24px rgba(27,42,74,.12);
+      backdrop-filter:blur(10px);
+    }
+    .mobile-taskbar a{
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      min-height:48px;padding:6px 4px;border:1.5px solid var(--mist);
+      border-radius:8px;background:#fff;color:var(--ink);text-decoration:none;
+      font-size:11.5px;font-weight:800;line-height:1.1;
+    }
+    .mobile-taskbar a:hover{border-color:var(--field);color:var(--field)}
+    .mobile-taskbar a:focus-visible{outline:3px solid var(--cherry);outline-offset:2px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -323,6 +344,13 @@
   </div>
 </footer>
 
+<nav class="mobile-taskbar" aria-label="Mobile reunion shortcuts">
+  <a href="#schedule">Schedule</a>
+  <a href="#photos">Photos</a>
+  <a href="#board">Message Board</a>
+  <a href="#info">Hotel Info</a>
+</nav>
+
 <script>
 /* ============================================================
    EVENTS — edit this list to change the schedule.
@@ -355,7 +383,7 @@ const EVENTS = [
   {date:"2026-07-04", start:"07:04", end:"08:30", title:"5K Race in Jackson",
    detail:"Race starts at 7:04 AM sharp — run or walk, all paces welcome.", loc:"410 W Main St, Jackson, MO 63755", day:"Saturday — 5K & Farm Visit", ddate:"July 4"},
   {date:"2026-07-04", start:"09:00", end:"12:00", title:"Farm Visit to Northcut",
-   detail:"Depart from hotel ~9 AM, arrive at the farm by 9:30. Lunch on your own afterward.", loc:"Northcut Farm", day:"Saturday — 5K & Farm Visit", ddate:"July 4"},
+   detail:"Depart from hotel ~9 AM, arrive at the farm by 9:30. Lunch on your own afterward.", loc:"Northcut Farm", day:"Saturday — 5K & Farm Visit - Happy Birthday Karen!", ddate:"July 4"},
   {date:"2026-07-04", start:"18:00", end:"20:00", title:"Dinner in the Halle — with Snoopy Cake!",
    detail:"Last dinner night. Sheet cake and ice cream for the 4th.", day:"Saturday — 5K & Farm Visit", ddate:"July 4"},
 
