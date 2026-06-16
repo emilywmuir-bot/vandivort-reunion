@@ -122,6 +122,14 @@
   .msg-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--soft);margin-bottom:2px}
   .msg-meta b{color:var(--field);font-size:13px}
   .msg-text{font-size:14.5px;white-space:pre-wrap;word-wrap:break-word}
+  .msg-actions{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .upvote{
+    border:1.5px solid var(--mist);background:var(--paper);color:var(--ink);
+    border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;
+    font-weight:700;cursor:pointer;
+  }
+  .upvote:hover{border-color:var(--field);color:var(--field)}
+  .upvote:disabled{cursor:default;opacity:.65}
   .msg-delete{
     display:none;background:none;border:none;color:var(--cherry);
     font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline;
@@ -453,7 +461,23 @@ const msgAdmin = document.getElementById("msgAdmin");
 
 const NAME_KEY = "vandivort-my-name";
 const ADMIN_CODE_KEY = "vandivort-message-admin-code";
+const UPVOTE_KEY = "vandivort-upvoted-messages";
 let messageAdminCode = "";
+function getUpvotedMessages(){
+  try{
+    const parsed = JSON.parse(localStorage.getItem(UPVOTE_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed.map(Number).filter(Number.isInteger) : [];
+  }catch(e){
+    return [];
+  }
+}
+function saveUpvotedMessage(id){
+  try{
+    const ids = new Set(getUpvotedMessages());
+    ids.add(id);
+    localStorage.setItem(UPVOTE_KEY, JSON.stringify([...ids]));
+  }catch(e){}
+}
 function loadName(){
   try{ const v = localStorage.getItem(NAME_KEY); if(v) msgName.value = v; }catch(e){}
 }
@@ -472,10 +496,16 @@ async function loadMessages(){
       msgStatus.textContent = "No messages yet — be the first to say hi!";
       return;
     }
-    msgList.innerHTML = items.map(m =>
-      '<div class="msg"><div class="msg-meta"><b>' + esc(m.name || "Anonymous") + '</b> · ' +
-      stamp(m.createdAt) + ' <button class="msg-delete" data-id="' + esc(String(m.id)) + '">Delete</button></div><div class="msg-text">' + esc(m.body) + '</div></div>'
-    ).join("");
+    const upvoted = new Set(getUpvotedMessages());
+    msgList.innerHTML = items.map(m => {
+      const id = Number(m.id);
+      const count = Number(m.upvotes || 0);
+      const voted = upvoted.has(id);
+      return '<div class="msg"><div class="msg-meta"><b>' + esc(m.name || "Anonymous") + '</b> · ' +
+      stamp(m.createdAt) + ' <button class="msg-delete" data-id="' + esc(String(m.id)) + '">Delete</button></div><div class="msg-text">' + esc(m.body) + '</div>' +
+      '<div class="msg-actions"><button class="upvote" data-id="' + esc(String(m.id)) + '"' + (voted ? ' disabled' : '') + '>▲ ' + (voted ? 'Upvoted' : 'Upvote') + '</button>' +
+      '<span class="msg-meta">' + esc(String(count)) + ' upvote' + (count === 1 ? '' : 's') + '</span></div></div>';
+    }).join("");
     msgStatus.textContent = "";
   }catch(e){
     msgStatus.textContent = "Couldn't load messages — tap Refresh to try again.";
@@ -499,6 +529,23 @@ async function postMessage(){
     msgStatus.textContent = "Couldn't post — check your connection and try again.";
   }
   msgSend.disabled = false;
+}
+async function upvoteMessage(id){
+  if(!Number.isInteger(id) || id < 1) return;
+  if(getUpvotedMessages().includes(id)) return;
+  msgStatus.textContent = "Adding upvote...";
+  try{
+    const res = await fetch("/api/messages", {
+      method:"PATCH",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({id:id, action:"upvote"})
+    });
+    if(!res.ok) throw new Error("bad status");
+    saveUpvotedMessage(id);
+    await loadMessages();
+  }catch(e){
+    msgStatus.textContent = "Couldn't add upvote — tap Refresh to try again.";
+  }
 }
 async function deleteMessage(id){
   if(!messageAdminCode) return;
@@ -538,9 +585,15 @@ msgAdmin.addEventListener("click", () => {
 });
 msgList.addEventListener("click", (e) => {
   if(!(e.target instanceof Element)) return;
-  const btn = e.target.closest(".msg-delete");
-  if(!btn) return;
-  deleteMessage(Number(btn.dataset.id));
+  const deleteBtn = e.target.closest(".msg-delete");
+  if(deleteBtn){
+    deleteMessage(Number(deleteBtn.dataset.id));
+    return;
+  }
+  const upvoteBtn = e.target.closest(".upvote");
+  if(upvoteBtn){
+    upvoteMessage(Number(upvoteBtn.dataset.id));
+  }
 });
 loadName(); loadAdminCode(); loadMessages();
 setInterval(loadMessages, 20000);

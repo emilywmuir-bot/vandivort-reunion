@@ -9,6 +9,7 @@ type MessageRow = {
   id: number;
   name: string;
   body: string;
+  upvotes: number;
   created_at: string | Date;
 };
 
@@ -17,6 +18,7 @@ function serializeMessage(row: MessageRow) {
     id: row.id,
     name: row.name,
     body: row.body,
+    upvotes: row.upvotes,
     createdAt: row.created_at,
   };
 }
@@ -24,12 +26,43 @@ function serializeMessage(row: MessageRow) {
 export default async (req: Request) => {
   if (req.method === "GET") {
     const rows = await db.sql<MessageRow[]>`
-      SELECT id, name, body, created_at
+      SELECT id, name, body, upvotes, created_at
       FROM messages
-      ORDER BY created_at DESC
+      ORDER BY upvotes DESC, created_at DESC
       LIMIT 200
     `;
     return Response.json(rows.map(serializeMessage));
+  }
+
+  if (req.method === "PATCH") {
+    let payload: { id?: unknown; action?: unknown };
+    try {
+      payload = await req.json();
+    } catch {
+      return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    }
+
+    const id = Number(payload.id);
+    if (!Number.isInteger(id) || id < 1) {
+      return Response.json({ error: "Valid message id is required" }, { status: 400 });
+    }
+
+    if (payload.action !== "upvote") {
+      return Response.json({ error: "Unsupported message action" }, { status: 400 });
+    }
+
+    const [row] = await db.sql<MessageRow[]>`
+      UPDATE messages
+      SET upvotes = upvotes + 1
+      WHERE id = ${id}
+      RETURNING id, name, body, upvotes, created_at
+    `;
+
+    if (!row) {
+      return Response.json({ error: "Message not found" }, { status: 404 });
+    }
+
+    return Response.json(serializeMessage(row));
   }
 
   if (req.method === "POST") {
@@ -50,7 +83,7 @@ export default async (req: Request) => {
     const [row] = await db.sql<MessageRow[]>`
       INSERT INTO messages (name, body)
       VALUES (${name || "Anonymous"}, ${body})
-      RETURNING id, name, body, created_at
+      RETURNING id, name, body, upvotes, created_at
     `;
 
     return Response.json(serializeMessage(row), { status: 201 });
