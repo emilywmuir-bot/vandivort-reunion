@@ -154,17 +154,21 @@
 
   /* ---------- photos ---------- */
   .photocard{background:#fff;border:1.5px solid var(--mist);border-radius:12px;padding:24px;text-align:center}
-  .photoactions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .photoactions{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;max-width:620px;margin:0 auto}
   .photobtn{
-    display:inline-block;background:var(--field);color:#fff;text-decoration:none;
-    font-weight:700;font-size:16px;padding:13px 28px;border-radius:999px;
+    display:flex;align-items:center;justify-content:center;background:var(--field);color:#fff;text-decoration:none;
+    font-weight:700;font-size:16px;padding:14px 18px;border-radius:999px;min-height:48px;
   }
   .videobtn{background:var(--ink)}
   .photobtn:hover{filter:brightness(.92)}
-  .photohow{font-size:13.5px;color:var(--soft);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;text-align:left}
+  .photohow{
+    font-size:14px;color:var(--soft);margin-top:18px;max-width:620px;margin-left:auto;margin-right:auto;text-align:left;
+    background:var(--cream);border:1px solid var(--mist);border-radius:10px;padding:16px 18px;
+  }
+  .photohow h3{font-family:Georgia,serif;font-size:18px;color:var(--ink);margin-bottom:8px}
   .photohow b{color:var(--ink)}
   .photohow ol{margin:8px 0 0 20px}
-  .photohow li{margin-top:4px}
+  .photohow li{margin-top:6px}
 
   /* ---------- info cards ---------- */
   .infogrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
@@ -196,6 +200,7 @@
     <div class="quicklinks">
       <a href="https://forms.gle/yfm2dkwmEgZNnLxs7" target="_blank" rel="noopener">Volunteer sign-up</a>
       <a href="#photos">Photo album</a>
+      <a href="https://vimeo.com/1028551127/a0de01b33d?share=copy&amp;fl=sv&amp;fe=ci" target="_blank" rel="noopener">Reunion video</a>
       <a href="#info">Hotel &amp; local info</a>
       <a href="#board">Message board</a>
       <a href="#suggest">Suggestion box</a>
@@ -214,15 +219,16 @@
 
   <!-- ================= PHOTOS ================= -->
   <section id="photos">
-    <h2>Reunion photo album</h2>
-    <p class="section-note">One shared album for the whole weekend — add your pics so everyone can see them.</p>
+    <h2>Reunion photos &amp; video</h2>
+    <p class="section-note">Open the shared Google Photos album or watch the reunion video from Vimeo.</p>
     <div class="photocard">
       <div class="photoactions">
         <a class="photobtn" href="https://photos.app.goo.gl/iE9Zcq2dGquR4Qy8A" target="_blank" rel="noopener">📸 Open the family album</a>
         <a class="photobtn videobtn" href="https://vimeo.com/1028551127/a0de01b33d?share=copy&amp;fl=sv&amp;fe=ci" target="_blank" rel="noopener">▶ Watch the reunion video</a>
       </div>
       <div class="photohow">
-        <b>To upload to the Google Photos album:</b>
+        <h3>Google Photos upload tips</h3>
+        <b>To add your photos or videos to the shared album:</b>
         <ol>
           <li>Tap <b>Open the family album</b>.</li>
           <li>In Google Photos, tap <b>Join</b> if prompted.</li>
