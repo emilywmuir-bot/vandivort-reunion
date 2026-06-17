@@ -393,6 +393,7 @@ const EVENTS = [
 ];
 const LOCATION = "Bavarian Halle, Jackson, MO";
 const TZ = "America/Chicago";
+const NORTHCUT_MAP_URL = "https://www.google.com/maps?q=37.0348373,-89.4617387&entry=gps&shh=CAE&lucs=,94297699,94231188,94280568,47071704,94218641,94282134,100813469,94286869,100820242&g_ep=CAISEjI2LjI0LjEuOTI4MjM2NTIyMBgAIIgnKlMsOTQyOTc2OTksOTQyMzExODgsOTQyODA1NjgsNDcwNzE3MDQsOTQyMTg2NDEsOTQyODIxMzQsMTAwODEzNDY5LDk0Mjg2ODY5LDEwMDgyMDI0MkICVVM%3D&skid=589e96a8-6415-468b-a618-06611c3c38ff&g_st=im";
 
 /* ---------- calendar helpers ---------- */
 function compact(date, time){ return date.replace(/-/g,"") + "T" + time.replace(":","") + "00"; }
@@ -408,6 +409,7 @@ function googleUrl(ev){
   return "https://calendar.google.com/calendar/render?" + p.toString();
 }
 function mapUrl(loc){
+  if(loc === "Northcut Farm") return NORTHCUT_MAP_URL;
   return "https://www.google.com/maps/search/?" + new URLSearchParams({api:"1", query:loc}).toString();
 }
 function downloadICS(ev){
