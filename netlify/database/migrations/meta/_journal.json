@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1781113068000,
+      "tag": "20260610213748_create_messages_and_suggestions_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1781548800000,
+      "tag": "20260616000000_add_messages_upvotes_column",
+      "breakpoints": true
+    }
+  ]
+}
