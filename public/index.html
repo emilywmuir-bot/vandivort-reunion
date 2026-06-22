@@ -153,6 +153,64 @@
     font-size:13px;cursor:pointer;text-decoration:underline;
   }
 
+  /* ---------- volunteer signups ---------- */
+  .volunteer{background:#fff;border:1.5px solid var(--mist);border-radius:12px;padding:28px}
+  .volunteer-intro{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;
+    padding-bottom:22px;border-bottom:1.5px solid var(--mist);margin-bottom:22px;
+  }
+  .volunteer-intro p{margin:0;color:var(--soft);font-size:17px;line-height:1.55}
+  .volunteer-cta{
+    display:inline-flex;align-items:center;justify-content:center;background:var(--field);
+    color:#fff;text-decoration:none;border-radius:999px;padding:14px 24px;
+    font-weight:800;font-size:16px;white-space:nowrap;
+  }
+  .volunteer-cta:hover{background:#315f43;color:#fff}
+  .volunteer-roles{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;
+    padding-bottom:22px;border-bottom:1.5px solid var(--mist);margin-bottom:22px;
+  }
+  .volunteer-role{border:1.5px solid var(--mist);border-radius:12px;padding:18px;min-height:152px}
+  .volunteer-role h3{font-size:21px;margin-bottom:8px}
+  .volunteer-role p{margin:0;color:var(--soft);font-size:15px;line-height:1.5}
+  .volunteer-board-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px}
+  .volunteer-board-head h3{font-size:24px;margin:0}
+  .volunteer-board-head .status{padding:0;text-align:right}
+  .volunteer-list{display:grid;gap:10px}
+  .volunteer-day{border:1.5px solid var(--mist);border-radius:12px;overflow:hidden;background:var(--paper)}
+  .volunteer-day-head{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:#fff;border:none;color:var(--ink);padding:13px 16px;cursor:pointer;
+    font:inherit;text-align:left;
+  }
+  .volunteer-day-title{font-weight:800;font-size:16px}
+  .volunteer-day-count{color:var(--soft);font-size:13px;font-weight:700}
+  .volunteer-day-toggle{font-weight:900;color:var(--cherry);font-size:22px;line-height:1}
+  .volunteer-day-items{padding:0 16px 14px}
+  .volunteer-day.collapsed .volunteer-day-items{display:none}
+  .volunteer-day.collapsed .volunteer-day-toggle{transform:rotate(-45deg)}
+  .volunteer-table{display:grid;gap:0}
+  .volunteer-row{
+    display:grid;grid-template-columns:minmax(0,1.35fr) minmax(105px,.55fr) minmax(120px,.7fr);
+    gap:12px;align-items:start;border-top:1px solid var(--mist);padding:10px 0;
+  }
+  .volunteer-row:first-child{border-top:none;padding-top:0}
+  .volunteer-date-task{font-weight:700;font-size:14.5px}
+  .volunteer-date{display:block;color:var(--soft);font-size:12.5px;font-weight:700;margin-bottom:2px}
+  .volunteer-time{font-size:14px;color:var(--ink);font-weight:700}
+  .volunteer-name{font-size:14px;color:var(--field);font-weight:700}
+  .volunteer-empty{font-size:14px;color:var(--soft);text-align:center;padding:10px 0}
+  .volunteer-actions{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+  @media (max-width:520px){
+    .volunteer{padding:20px}
+    .volunteer-intro{grid-template-columns:1fr}
+    .volunteer-cta{width:100%;white-space:normal;text-align:center}
+    .volunteer-roles{grid-template-columns:1fr}
+    .volunteer-board-head{display:block}
+    .volunteer-board-head .status{text-align:left;margin-top:6px}
+    .volunteer-row{grid-template-columns:1fr;gap:3px}
+  }
+
   /* ---------- suggestion box ---------- */
   .sbox{background:#fff;border:1.5px solid var(--mist);border-radius:12px;padding:20px}
   .thanks{color:var(--field);font-weight:700;font-size:14px;margin-top:8px;display:none}
@@ -230,7 +288,7 @@
     <h1>Vandivort Family Reunion</h1>
     <p class="sub"><b>Bavarian Halle &middot; Jackson, Missouri</b><br>Staying at the Drury Inn &middot; Halle opens Thursday at 2&nbsp;PM</p>
     <div class="quicklinks">
-      <a href="https://forms.gle/yfm2dkwmEgZNnLxs7" target="_blank" rel="noopener">Volunteer sign-up</a>
+      <a href="#volunteers">Volunteer Sign Up &amp; Schedule</a>
       <a href="#photos">Photo album</a>
       <a href="https://vimeo.com/1028551127/a0de01b33d?share=copy&amp;fl=sv&amp;fe=ci" target="_blank" rel="noopener">Reunion video</a>
       <a href="#info">Hotel &amp; local info</a>
@@ -247,6 +305,51 @@
     <h2>Schedule</h2>
     <p class="section-note">Tap <b>+ Add to calendar</b> on any event to save it to Google or Apple Calendar. All times Central.</p>
     <div id="scheduleRoot"></div>
+  </section>
+
+  <!-- ================= VOLUNTEER SIGNUPS ================= -->
+  <section id="volunteers">
+    <h2>Volunteer sign-ups</h2>
+    <p class="section-note">A few small jobs keep the weekend easy for everyone. Pick a slot, then check back here to see where help is already covered.</p>
+    <div class="volunteer">
+      <div class="volunteer-intro">
+        <p>Use the Google Form to choose the duties you can cover. The live board below refreshes automatically as new responses are published.</p>
+        <a class="volunteer-cta" href="https://forms.gle/yfm2dkwmEgZNnLxs7" target="_blank" rel="noopener">Open volunteer form</a>
+      </div>
+      <div class="volunteer-roles" aria-label="Volunteer duty examples">
+        <article class="volunteer-role">
+          <h3>Halle setup</h3>
+          <p>Help arrange tables, chairs, signs, nametags, coolers, and activity areas before people arrive.</p>
+        </article>
+        <article class="volunteer-role">
+          <h3>Meal help</h3>
+          <p>Pitch in with serving lines, drink stations, dessert tables, and quick resets after each shared meal.</p>
+        </article>
+        <article class="volunteer-role">
+          <h3>Kids activities</h3>
+          <p>Support crafts, games, rockets, and other kid-friendly activities so parents can relax and visit.</p>
+        </article>
+        <article class="volunteer-role">
+          <h3>Photo &amp; memory table</h3>
+          <p>Encourage family album uploads, help label old photos, and make sure reunion memories are captured.</p>
+        </article>
+        <article class="volunteer-role">
+          <h3>Errands &amp; hospitality</h3>
+          <p>Handle supply runs, greet arrivals, answer questions, and help relatives find what they need.</p>
+        </article>
+        <article class="volunteer-role">
+          <h3>Clean-up &amp; load-out</h3>
+          <p>Take down tables, gather supplies, pack boxes, and leave the Halle ready after the reunion wraps.</p>
+        </article>
+      </div>
+      <div class="volunteer-board-head">
+        <h3>Live volunteer board</h3>
+        <div class="status">Refreshes every 30 seconds</div>
+      </div>
+      <div id="volunteerList" class="volunteer-list"></div>
+      <div id="volunteerStatus" class="volunteer-empty">Loading volunteer sign-ups...</div>
+      <div class="volunteer-actions"><button class="refresh" id="volunteerRefresh">Refresh now</button></div>
+    </div>
   </section>
 
   <!-- ================= PHOTOS ================= -->
@@ -348,7 +451,7 @@
   <a href="#schedule">Schedule</a>
   <a href="#photos">Photos</a>
   <a href="#board">Message Board</a>
-  <a href="#info">Hotel Info</a>
+  <a href="#volunteers">Volunteers</a>
 </nav>
 
 <script>
@@ -509,6 +612,96 @@ function stamp(iso){
   if(isNaN(d)) return "";
   return d.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
 }
+
+/* ---------- volunteer signups ---------- */
+const volunteerList = document.getElementById("volunteerList");
+const volunteerStatus = document.getElementById("volunteerStatus");
+const VOLUNTEER_DAYS = [
+  {key:"2026-07-02", label:"Thursday, July 2"},
+  {key:"2026-07-03", label:"Friday, July 3"},
+  {key:"2026-07-04", label:"Saturday, July 4"},
+  {key:"2026-07-05", label:"Sunday, July 5"},
+  {key:"other", label:"Other volunteer slots"},
+];
+function volunteerDateKey(item){
+  if(item.dateKey) return item.dateKey;
+  const text = (item.task + " " + item.detail).toLowerCase();
+  if(/july\s*2|jul\s*2|7\/2|07\/02|thursday/.test(text)) return "2026-07-02";
+  if(/july\s*3|jul\s*3|7\/3|07\/03|friday/.test(text)) return "2026-07-03";
+  if(/july\s*4|jul\s*4|7\/4|07\/04|saturday/.test(text)) return "2026-07-04";
+  if(/july\s*5|jul\s*5|7\/5|07\/05|sunday/.test(text)) return "2026-07-05";
+  return "other";
+}
+function volunteerTaskLabel(item){
+  if(item.description) return item.description.trim();
+  const task = (item.task || "Volunteer slot").trim();
+  const detail = (item.detail || "").trim();
+  if(!detail || task.toLowerCase().includes(detail.toLowerCase())) return task;
+  return detail + " - " + task;
+}
+function volunteerDateLabel(item, group){
+  return item.dateLabel || group.label;
+}
+function volunteerTimeLabel(item){
+  return (item.time || "").trim();
+}
+function renderVolunteerItems(items){
+  const groups = VOLUNTEER_DAYS
+    .map(day => ({...day, items:items.filter(item => volunteerDateKey(item) === day.key)}))
+    .filter(day => day.items.length);
+  volunteerList.innerHTML = groups.map((group, index) => {
+    const panelId = "volunteer-day-" + group.key;
+    return '<div class="volunteer-day' + (index ? ' collapsed' : '') + '">' +
+      '<button class="volunteer-day-head" type="button" aria-expanded="' + (index ? 'false' : 'true') + '" aria-controls="' + panelId + '">' +
+        '<span><span class="volunteer-day-title">' + esc(group.label) + '</span> <span class="volunteer-day-count">' + group.items.length + ' signed up</span></span>' +
+        '<span class="volunteer-day-toggle" aria-hidden="true">+</span>' +
+      '</button>' +
+      '<div class="volunteer-day-items" id="' + panelId + '">' +
+      '<div class="volunteer-table">' +
+        group.items.map(item =>
+          '<div class="volunteer-row">' +
+            '<div class="volunteer-date-task">' +
+              '<span class="volunteer-date">' + esc(volunteerDateLabel(item, group)) + '</span>' +
+              esc(volunteerTaskLabel(item)) +
+            '</div>' +
+            '<div class="volunteer-time">' + esc(volunteerTimeLabel(item)) + '</div>' +
+            '<div class="volunteer-name">' + esc(item.name || "Open") + '</div>' +
+          '</div>').join("") +
+      '</div>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+  volunteerList.querySelectorAll(".volunteer-day-head").forEach(head => {
+    head.addEventListener("click", () => {
+      const day = head.closest(".volunteer-day");
+      const isCollapsed = day.classList.toggle("collapsed");
+      head.setAttribute("aria-expanded", String(!isCollapsed));
+    });
+  });
+}
+async function loadVolunteerSignups(){
+  try{
+    const res = await fetch("/api/volunteer-signups");
+    if(!res.ok) throw new Error("bad status");
+    const items = await res.json();
+    if(!Array.isArray(items) || items.length === 0){
+      volunteerList.innerHTML = "";
+      volunteerStatus.textContent = "No volunteer sign-ups are listed yet.";
+      volunteerStatus.style.display = "block";
+      return;
+    }
+    renderVolunteerItems(items);
+    volunteerStatus.textContent = "";
+    volunteerStatus.style.display = "none";
+  }catch(e){
+    volunteerList.innerHTML = "";
+    volunteerStatus.textContent = "Couldn't load volunteer sign-ups — tap Refresh to try again.";
+    volunteerStatus.style.display = "block";
+  }
+}
+document.getElementById("volunteerRefresh").addEventListener("click", loadVolunteerSignups);
+loadVolunteerSignups();
+setInterval(loadVolunteerSignups, 30000);
 
 /* ---------- message board ---------- */
 const msgList = document.getElementById("msgList");
