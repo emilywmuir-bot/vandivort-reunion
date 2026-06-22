@@ -2,6 +2,8 @@ import type { Config } from "@netlify/functions";
 import { db } from "../../db/index.js";
 
 const BODY_MAX = 600;
+const ADMIN_CODE_VAR = "MESSAGE_ADMIN_CODE";
+const DEFAULT_ADMIN_CODE = "0704";
 
 type SuggestionRow = {
   id: number;
@@ -19,6 +21,11 @@ function serializeSuggestion(row: SuggestionRow) {
 
 export default async (req: Request) => {
   if (req.method === "GET") {
+    const adminCode = Netlify.env.get(ADMIN_CODE_VAR) || DEFAULT_ADMIN_CODE;
+    if (req.headers.get("x-admin-code") !== adminCode) {
+      return Response.json({ error: "Invalid admin code" }, { status: 401 });
+    }
+
     const rows = await db.sql<SuggestionRow[]>`
       SELECT id, body, created_at
       FROM suggestions

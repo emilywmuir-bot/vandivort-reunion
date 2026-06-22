@@ -4,6 +4,7 @@ import { db } from "../../db/index.js";
 const NAME_MAX = 40;
 const BODY_MAX = 600;
 const ADMIN_CODE_VAR = "MESSAGE_ADMIN_CODE";
+const DEFAULT_ADMIN_CODE = "0704";
 
 type MessageRow = {
   id: number;
@@ -90,10 +91,7 @@ export default async (req: Request) => {
   }
 
   if (req.method === "DELETE") {
-    const adminCode = Netlify.env.get(ADMIN_CODE_VAR);
-    if (!adminCode) {
-      return Response.json({ error: "Message deletion is not configured" }, { status: 503 });
-    }
+    const adminCode = Netlify.env.get(ADMIN_CODE_VAR) || DEFAULT_ADMIN_CODE;
 
     let payload: { id?: unknown; adminCode?: unknown };
     try {
