@@ -199,6 +199,7 @@
   .volunteer-date{display:block;color:var(--soft);font-size:12.5px;font-weight:700;margin-bottom:2px}
   .volunteer-time{font-size:14px;color:var(--ink);font-weight:700}
   .volunteer-name{font-size:14px;color:var(--field);font-weight:700}
+  .volunteer-name-count{display:block;color:var(--soft);font-size:12.5px;font-weight:700;margin-top:2px}
   .volunteer-empty{font-size:14px;color:var(--soft);text-align:center;padding:10px 0}
   .volunteer-actions{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
   @media (max-width:520px){
@@ -645,12 +646,38 @@ function volunteerDateLabel(item, group){
 function volunteerTimeLabel(item){
   return (item.time || "").trim();
 }
+function volunteerAssignmentGroups(items, group){
+  const assignments = [];
+  const byAssignment = new Map();
+  items.forEach(item => {
+    const assignment = {
+      dateLabel: volunteerDateLabel(item, group),
+      task: volunteerTaskLabel(item),
+      time: volunteerTimeLabel(item),
+      names: [],
+    };
+    const key = [assignment.dateLabel, assignment.task, assignment.time]
+      .map(value => value.trim().toLowerCase())
+      .join("\u0000");
+    if(!byAssignment.has(key)){
+      byAssignment.set(key, assignment);
+      assignments.push(assignment);
+    }
+    const name = (item.name || "Open").trim();
+    const names = byAssignment.get(key).names;
+    if(!names.some(existing => existing.toLowerCase() === name.toLowerCase())){
+      names.push(name);
+    }
+  });
+  return assignments;
+}
 function renderVolunteerItems(items){
   const groups = VOLUNTEER_DAYS
     .map(day => ({...day, items:items.filter(item => volunteerDateKey(item) === day.key)}))
     .filter(day => day.items.length);
   volunteerList.innerHTML = groups.map((group, index) => {
     const panelId = "volunteer-day-" + group.key;
+    const assignments = volunteerAssignmentGroups(group.items, group);
     return '<div class="volunteer-day' + (index ? ' collapsed' : '') + '">' +
       '<button class="volunteer-day-head" type="button" aria-expanded="' + (index ? 'false' : 'true') + '" aria-controls="' + panelId + '">' +
         '<span><span class="volunteer-day-title">' + esc(group.label) + '</span> <span class="volunteer-day-count">' + group.items.length + ' signed up</span></span>' +
@@ -658,14 +685,17 @@ function renderVolunteerItems(items){
       '</button>' +
       '<div class="volunteer-day-items" id="' + panelId + '">' +
       '<div class="volunteer-table">' +
-        group.items.map(item =>
+        assignments.map(assignment =>
           '<div class="volunteer-row">' +
             '<div class="volunteer-date-task">' +
-              '<span class="volunteer-date">' + esc(volunteerDateLabel(item, group)) + '</span>' +
-              esc(volunteerTaskLabel(item)) +
+              '<span class="volunteer-date">' + esc(assignment.dateLabel) + '</span>' +
+              esc(assignment.task) +
             '</div>' +
-            '<div class="volunteer-time">' + esc(volunteerTimeLabel(item)) + '</div>' +
-            '<div class="volunteer-name">' + esc(item.name || "Open") + '</div>' +
+            '<div class="volunteer-time">' + esc(assignment.time) + '</div>' +
+            '<div class="volunteer-name">' +
+              esc(assignment.names.join(", ")) +
+              (assignment.names.length > 1 ? '<span class="volunteer-name-count">' + assignment.names.length + ' people</span>' : '') +
+            '</div>' +
           '</div>').join("") +
       '</div>' +
       '</div>' +
