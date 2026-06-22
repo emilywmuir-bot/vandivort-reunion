@@ -852,6 +852,7 @@ const sugSend = document.getElementById("sugSend");
 const sugThanks = document.getElementById("sugThanks");
 const sugList = document.getElementById("sugList");
 let sugOpen = false;
+let suggestionAdminCode = "";
 
 sugSend.addEventListener("click", async ()=>{
   const body = sugText.value.trim();
@@ -877,7 +878,18 @@ sugSend.addEventListener("click", async ()=>{
 });
 async function loadSuggestions(){
   try{
-    const res = await fetch("/api/suggestions");
+    const res = await fetch("/api/suggestions", {
+      headers:{"X-Admin-Code":suggestionAdminCode}
+    });
+    if(res.status === 401){
+      try{ sessionStorage.removeItem(ADMIN_CODE_KEY); }catch(e){}
+      suggestionAdminCode = "";
+      loadAdminCode();
+      sugOpen = false;
+      sugList.style.display = "none";
+      alert("Admin code was not accepted.");
+      return;
+    }
     if(!res.ok) throw new Error("bad status");
     const items = await res.json();
     if(!Array.isArray(items) || items.length === 0){ sugList.innerHTML = '<div class="sug">No suggestions yet.</div>'; return; }
@@ -890,7 +902,20 @@ async function loadSuggestions(){
 document.getElementById("sugToggle").addEventListener("click", ()=>{
   sugOpen = !sugOpen;
   sugList.style.display = sugOpen ? "block" : "none";
-  if(sugOpen) loadSuggestions();
+  if(sugOpen){
+    suggestionAdminCode = suggestionAdminCode || messageAdminCode;
+    if(!suggestionAdminCode){
+      const code = prompt("Enter the committee admin code:");
+      if(!code){
+        sugOpen = false;
+        sugList.style.display = "none";
+        return;
+      }
+      suggestionAdminCode = code;
+      try{ sessionStorage.setItem(ADMIN_CODE_KEY, code); }catch(e){}
+    }
+    loadSuggestions();
+  }
 });
 
 /* photo album shortcut opens this page's photo section so guests see the video and upload guide */
