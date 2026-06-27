@@ -3,7 +3,6 @@ import { db } from "../../db/index.js";
 
 const BODY_MAX = 600;
 const ADMIN_CODE_VAR = "MESSAGE_ADMIN_CODE";
-const DEFAULT_ADMIN_CODE = "0704";
 
 type SuggestionRow = {
   id: number;
@@ -19,9 +18,18 @@ function serializeSuggestion(row: SuggestionRow) {
   };
 }
 
+function getAdminCode() {
+  const adminCode = Netlify.env.get(ADMIN_CODE_VAR);
+  return adminCode && adminCode.trim() ? adminCode : "";
+}
+
 export default async (req: Request) => {
   if (req.method === "GET") {
-    const adminCode = Netlify.env.get(ADMIN_CODE_VAR) || DEFAULT_ADMIN_CODE;
+    const adminCode = getAdminCode();
+    if (!adminCode) {
+      return Response.json({ error: "Admin code is not configured" }, { status: 503 });
+    }
+
     if (req.headers.get("x-admin-code") !== adminCode) {
       return Response.json({ error: "Invalid admin code" }, { status: 401 });
     }

@@ -49,6 +49,12 @@ in `public/index.html`. Each entry takes a `date` (`YYYY-MM-DD`), `start`/`end` 
 (24-hour `HH:MM`, Central), a `title`, and a `detail`. Add-to-calendar links are generated
 automatically.
 
+## Admin code
+
+Message deletion and suggestion review use the `MESSAGE_ADMIN_CODE` Netlify environment
+variable. Configure it in Netlify site settings under environment variables for the
+deploy contexts that need admin access. Do not hard-code the admin code in source files.
+
 ## Changing the database schema
 
 Edit `db/schema.ts`, then generate a migration:
