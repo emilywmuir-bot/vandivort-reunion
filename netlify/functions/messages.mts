@@ -4,7 +4,6 @@ import { db } from "../../db/index.js";
 const NAME_MAX = 40;
 const BODY_MAX = 600;
 const ADMIN_CODE_VAR = "MESSAGE_ADMIN_CODE";
-const DEFAULT_ADMIN_CODE = "0704";
 
 type MessageRow = {
   id: number;
@@ -22,6 +21,11 @@ function serializeMessage(row: MessageRow) {
     upvotes: row.upvotes,
     createdAt: row.created_at,
   };
+}
+
+function getAdminCode() {
+  const adminCode = Netlify.env.get(ADMIN_CODE_VAR);
+  return adminCode && adminCode.trim() ? adminCode : "";
 }
 
 export default async (req: Request) => {
@@ -91,7 +95,10 @@ export default async (req: Request) => {
   }
 
   if (req.method === "DELETE") {
-    const adminCode = Netlify.env.get(ADMIN_CODE_VAR) || DEFAULT_ADMIN_CODE;
+    const adminCode = getAdminCode();
+    if (!adminCode) {
+      return Response.json({ error: "Admin code is not configured" }, { status: 503 });
+    }
 
     let payload: { id?: unknown; adminCode?: unknown };
     try {
