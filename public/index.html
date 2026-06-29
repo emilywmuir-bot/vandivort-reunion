@@ -93,6 +93,14 @@
   .etime{font-size:12.5px;color:var(--cherry);font-weight:700;letter-spacing:.05em}
   .etitle{font-weight:700;font-size:16px;margin-top:2px}
   .edetail{font-size:13.5px;color:var(--soft);margin-top:3px}
+  .event-docs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .doclink{
+    display:inline-flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--field);border-radius:999px;
+    color:var(--field);background:#fff;text-decoration:none;
+    font-size:12.5px;font-weight:700;padding:5px 11px;
+  }
+  .doclink:hover{background:var(--field);color:#fff}
   .event-stub{
     flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;
     padding:0 14px;border-left:2px dashed var(--mist);
@@ -437,8 +445,12 @@ const EVENTS = [
   // Friday, July 3 — History & VPI Meetings
   {date:"2026-07-03", timeLabel:"Golfers", noCal:true, title:"Golf",
    detail:"Contact Thor if interested.", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+  {date:"2026-07-03", start:"08:00", end:"09:00", title:"Model Rocket Launch for Kids w/ Jesse",
+   detail:"No supplies needed. Contact Jesse Hercules for details. 662-816-0286", loc:"Brookside Park, Jackson, MO", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"10:00", end:"11:30", title:"Vandivorts in the Revolutionary War",
-   detail:"Led by Rita & Gail. Meet in the salon of the Halle. Kids' crafts provided in the Halle.", day:"Friday — History & VPI Meetings", ddate:"July 3"},
+   detail:"Led by Rita & Gail. Meet in the salon of the Halle. Kids' crafts provided in the Halle.",
+   docs:[{label:"Vandivorts in the Revolutionary War PDF", url:"/assets/vandivort-patriots-presentation.pdf"}],
+   day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"13:30", end:"14:15", title:"VPI Directors & Officers Meeting (closed)",
    detail:"Jackson Civic Center.", loc:"Jackson Civic Center, 381 E Deerwood Dr, Jackson, MO 63755", day:"Friday — History & VPI Meetings", ddate:"July 3"},
   {date:"2026-07-03", start:"14:15", end:"15:00", title:"Farm Meeting — all welcome!",
@@ -550,11 +562,17 @@ function fmtTime(t){
             '<button type="button" class="appleics">Apple / iPhone (.ics)</button>' +
           '</div>' +
         '</div>';
+      const docsHtml = ev.docs
+        ? '<div class="event-docs">' + ev.docs.map(doc =>
+            '<a class="doclink" href="' + doc.url + '" target="_blank" rel="noopener">Open PDF</a>' +
+            '<a class="doclink" href="' + doc.url + '" download>Download PDF</a>'
+          ).join("") + '</div>'
+        : '';
       row.innerHTML =
         '<div class="event-main">' +
           timeHtml +
           '<div class="etitle">' + ev.title + '</div>' +
-          '<div class="edetail">' + ev.detail + (ev.loc ? ' <a href="' + mapUrl(ev.loc) + '" target="_blank" rel="noopener">GPS directions</a>' : '') + '</div>' +
+          '<div class="edetail">' + ev.detail + (ev.loc ? ' <a href="' + mapUrl(ev.loc) + '" target="_blank" rel="noopener">GPS directions</a>' : '') + docsHtml + '</div>' +
         '</div>' + stubHtml;
       if(!ev.noCal){
         const stub = row.querySelector(".event-stub");
